@@ -8,6 +8,10 @@ const Task = (props) => {
     props.updateTasks(props.id);
   };
 
+  const onXButtonClick = () => {
+    props.deleteTask(props.id);
+  };
+
   return (
     <li className="tasks__item">
       <button
@@ -18,7 +22,9 @@ const Task = (props) => {
       >
         {props.title}
       </button>
-      <button className="tasks__item__remove button">x</button>
+      <button className="tasks__item__remove button" onClick={onXButtonClick}>
+        x
+      </button>
     </li>
   );
 };
@@ -28,6 +34,7 @@ Task.propTypes = {
   title: PropTypes.string.isRequired,
   isComplete: PropTypes.bool.isRequired,
   updateTasks: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired,
 };
 
 export default Task;

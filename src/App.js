@@ -18,7 +18,6 @@ const TASKS = [
 const App = () => {
   const [tasks, setTasks] = useState(TASKS);
   const updateTasks = (id) => {
-    console.log('hellooo');
     const newTasks = [];
     for (const task of tasks) {
       // const newTask = { ...task };
@@ -29,13 +28,32 @@ const App = () => {
     }
     setTasks(newTasks);
   };
+
+  const deleteTask = (id) => {
+    console.log('hello');
+    const newTasks = [];
+    for (const task of tasks) {
+      if (task.id != id) {
+        newTasks.push(task);
+      }
+    }
+    setTasks(newTasks);
+  };
   return (
     <div className="App">
       <header className="App-header">
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
-        <div>{<TaskList tasks={tasks} updateTasks={updateTasks} />}</div>
+        <div>
+          {
+            <TaskList
+              tasks={tasks}
+              updateTasks={updateTasks}
+              deleteTask={deleteTask}
+            />
+          }
+        </div>
       </main>
     </div>
   );
