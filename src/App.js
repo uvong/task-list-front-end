@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TaskList from './components/TaskList.js';
 import './App.css';
-
-const TASKS = [
-  {
-    id: 1,
-    title: 'Mow the lawn',
-    isComplete: false,
-  },
-  {
-    id: 2,
-    title: 'Cook Pasta',
-    isComplete: true,
-  },
-];
+import axios from 'axios';
 
 const App = () => {
-  const [tasks, setTasks] = useState(TASKS);
+  const [tasks, setTasks] = useState([]);
+
+  const URL = 'https://task-list-api-c17.herokuapp.com/tasks';
+
+  const fetchDrivers = () => {
+    axios
+      .get(URL)
+      .then((res) => {
+        const newTasks = res.data.map((task) => {
+          return {
+            id: task.id,
+            title: task.title,
+            isComplete: task.is_complete,
+          };
+        });
+        setTasks(newTasks);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(fetchDrivers, []);
+
   const updateTasks = (id) => {
     const newTasks = [];
     for (const task of tasks) {
@@ -24,6 +35,7 @@ const App = () => {
       if (task.id === id) {
         task.isComplete = !task.isComplete;
       }
+
       newTasks.push(task);
     }
     setTasks(newTasks);
