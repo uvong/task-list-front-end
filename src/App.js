@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TaskList from './components/TaskList.js';
 import './App.css';
 import axios from 'axios';
+import TaskForm from './components/TaskForm.js';
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
@@ -73,6 +74,19 @@ const App = () => {
         console.log(err);
       });
   };
+
+  const addTask = (TaskInfo) => {
+    axios
+      .post(URL, TaskInfo)
+      .then((response) => {
+        console.log(response);
+        fetchDrivers();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -80,13 +94,14 @@ const App = () => {
       </header>
       <main>
         <div>
-          {
-            <TaskList
-              tasks={tasks}
-              updateTasks={updateTasks}
-              deleteTask={deleteTask}
-            />
-          }
+          <TaskList
+            tasks={tasks}
+            updateTasks={updateTasks}
+            deleteTask={deleteTask}
+          />
+        </div>
+        <div className="Form">
+          <TaskForm addTask={addTask} />
         </div>
       </main>
     </div>
