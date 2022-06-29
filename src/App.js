@@ -29,16 +29,32 @@ const App = () => {
   useEffect(fetchDrivers, []);
 
   const updateTasks = (id) => {
-    const newTasks = [];
+    let markCompleteChoice = 'mark_complete';
     for (const task of tasks) {
       // const newTask = { ...task };
       if (task.id === id) {
-        task.isComplete = !task.isComplete;
+        if (task.isComplete) {
+          markCompleteChoice = 'mark_incomplete';
+        }
       }
-
-      newTasks.push(task);
     }
-    setTasks(newTasks);
+
+    axios
+      .patch(`${URL}/${id}/${markCompleteChoice}`)
+      .then(() => {
+        const newTasks = [];
+        for (const task of tasks) {
+          // const newTask = { ...task };
+          if (task.id === id) {
+            task.isComplete = !task.isComplete;
+          }
+          newTasks.push(task);
+        }
+        setTasks(newTasks);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const deleteTask = (id) => {
